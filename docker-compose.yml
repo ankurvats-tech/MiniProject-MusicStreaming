@@ -1,0 +1,34 @@
+services:
+  web:
+    image: ghcr.io/blackcandy-org/blackcandy:latest
+    ports:
+      - "3000:80"
+    environment:
+      MEDIA_PATH: /media_data
+      REDIS_URL: redis://redis:6379/0
+      MEDIA_LISTENER_DISABLED: "true"
+    volumes:
+      - ./music:/media_data
+      - blackcandy-data:/app/storage
+    depends_on:
+      - redis
+
+  worker:
+    image: ghcr.io/blackcandy-org/blackcandy:latest
+    command: bundle exec rails solid_queue:work
+    environment:
+      MEDIA_PATH: /media_data
+      REDIS_URL: redis://redis:6379/0
+      MEDIA_LISTENER_DISABLED: "true"
+    volumes:
+      - ./music:/media_data
+      - blackcandy-data:/app/storage
+    depends_on:
+      - redis
+
+  redis:
+    image: redis:6
+    restart: always
+
+volumes:
+  blackcandy-data:
