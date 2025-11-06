@@ -14,6 +14,7 @@
     "stylelint-config-standard-scss": "^9.0.0"
   },
   "scripts": {
+    "start": "bin/rails server -b 0.0.0.0 -p 3000",
     "build": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets --minify",
     "build-dev": "esbuild app/javascript/*.* --bundle --sourcemap --format=esm --outdir=app/assets/builds --public-path=/assets",
     "build:css": "sass app/assets/stylesheets/application.scss:app/assets/builds/application.css --no-source-map --style=compressed",
