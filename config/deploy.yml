@@ -1,0 +1,38 @@
+service: blackcandy
+
+image: blackcandy-org/blackcandy
+
+builder:
+  arch:
+    - amd64
+    - arm64
+
+registry:
+  server: ghcr.io
+  username:
+    - REGISTRY_USER
+  password:
+    - REGISTRY_TOKEN
+
+servers:
+  web:
+    hosts:
+     - <%= ENV["SERVER_IP"] %>
+    asset_path: /app/public/assets
+env:
+  clear:
+    MEDIA_PATH: /media_data
+    DEMO_MODE: true
+  secret:
+    - SECRET_KEY_BASE
+
+ssh:
+  user: <%= ENV["SERVER_USER"] %>
+
+volumes:
+  - "${PWD}/media_data:/media_data"
+  - "${PWD}/storage_data:/app/storage"
+
+proxy:
+  host: demo.blackcandy.org
+  ssl: true
